@@ -87,22 +87,15 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
                     try{
                         labelsArray.get(selectedLabelIndex).setBorder(BorderFactory.createSoftBevelBorder(0));
                     } catch(ArrayIndexOutOfBoundsException ex) {}
-                    switch(labelsArray.get(thisIndex).getProperty()) {
-                        case UPPER_TILE:
-                            normalRadioButton.setSelected(false);
-                            uppergroundRadioButton.setSelected(true);
-                            wallRadioButton.setSelected(false);
-                            break;
-                        case WALKABLE_TILE:
-                            normalRadioButton.setSelected(true);
-                            uppergroundRadioButton.setSelected(false);
-                            wallRadioButton.setSelected(false);
-                            break;
-                        case WALLED_TILE:
-                            normalRadioButton.setSelected(false);
-                            uppergroundRadioButton.setSelected(false);
-                            wallRadioButton.setSelected(true);
+                    
+                    if(normalRadioButton.isSelected()) {
+                        labelsArray.get(thisIndex).setProperty(Property.WALKABLE_TILE);
+                    } else if(wallRadioButton.isSelected()) {
+                        labelsArray.get(thisIndex).setProperty(Property.WALLED_TILE);
+                    } else if(uppergroundRadioButton.isSelected()) {
+                        labelsArray.get(thisIndex).setProperty(Property.UPPER_TILE);
                     }
+                    
                     selectedLabelIndex = thisIndex;
                     labelsArray.get(thisIndex).setBorder(BorderFactory.createSoftBevelBorder(1));                    
                 }
@@ -442,28 +435,20 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
     private void wallRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wallRadioButtonActionPerformed
       if(wallRadioButton.isSelected()) {
           uppergroundRadioButton.setSelected(false);  
-          normalRadioButton.setSelected(false);
-          labelsArray.get(selectedLabelIndex).setProperty(Property.WALLED_TILE);            
-          labelsArray.get(selectedLabelIndex).repaint();            
+          normalRadioButton.setSelected(false);        
       }
       else {
           normalRadioButton.setSelected(true);
-          labelsArray.get(selectedLabelIndex).setProperty(Property.WALKABLE_TILE);            
-          labelsArray.get(selectedLabelIndex).repaint();            
       }
     }//GEN-LAST:event_wallRadioButtonActionPerformed
 
     private void uppergroundRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uppergroundRadioButtonActionPerformed
       if(uppergroundRadioButton.isSelected()) {
           wallRadioButton.setSelected(false);  
-          normalRadioButton.setSelected(false);
-          labelsArray.get(selectedLabelIndex).setProperty(Property.UPPER_TILE);            
-          labelsArray.get(selectedLabelIndex).repaint();            
+          normalRadioButton.setSelected(false);           
       }
       else {
-          normalRadioButton.setSelected(true);
-          labelsArray.get(selectedLabelIndex).setProperty(Property.WALKABLE_TILE);            
-          labelsArray.get(selectedLabelIndex).repaint();            
+          normalRadioButton.setSelected(true);           
       }
     }//GEN-LAST:event_uppergroundRadioButtonActionPerformed
 
@@ -513,9 +498,7 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
     private void normalRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalRadioButtonActionPerformed
         if(normalRadioButton.isSelected()) {
           wallRadioButton.setSelected(false);  
-          uppergroundRadioButton.setSelected(false);
-          labelsArray.get(selectedLabelIndex).setProperty(Property.WALKABLE_TILE);            
-          labelsArray.get(selectedLabelIndex).repaint();            
+          uppergroundRadioButton.setSelected(false);            
       }
       else {
           normalRadioButton.setSelected(true);
