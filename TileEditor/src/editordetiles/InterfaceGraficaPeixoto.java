@@ -145,6 +145,9 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        tileWidthTextField = new javax.swing.JTextField();
+        tileHeightTextField = new javax.swing.JTextField();
+        xLabel = new javax.swing.JLabel();
         MenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
         openTileMenu = new javax.swing.JMenu();
@@ -238,6 +241,24 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
             }
         });
 
+        tileWidthTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tileWidthTextField.setText("32");
+        tileWidthTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tileWidthTextFieldActionPerformed(evt);
+            }
+        });
+
+        tileHeightTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tileHeightTextField.setText("32");
+        tileHeightTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tileHeightTextFieldActionPerformed(evt);
+            }
+        });
+
+        xLabel.setText("x");
+
         FileMenu.setText("File");
 
         openTileMenu.setText("Open Tile");
@@ -320,6 +341,12 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(tileWidthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(xLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tileHeightTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
                                 .addComponent(gridCheckBox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(useSelectedTileButton)))
@@ -346,11 +373,11 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(34, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2)
-                            .addComponent(labelsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
+                            .addComponent(labelsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -358,7 +385,11 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
                                 .addComponent(uppergroundRadioButton)
                                 .addComponent(normalRadioButton)
                                 .addComponent(useSelectedTileButton))
-                            .addComponent(gridCheckBox))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(gridCheckBox)
+                                .addComponent(tileWidthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tileHeightTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(xLabel)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -453,11 +484,11 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
     }//GEN-LAST:event_uppergroundRadioButtonActionPerformed
 
     private void saveTileMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTileMenuItemActionPerformed
-        Property propertyVet[] = new Property[64];
-        for(int i = 0; i < 64; i++) {
+        Property propertyVet[] = new Property[labelsArray.size()];
+        for(int i = 0; i < labelsArray.size(); i++) {
             propertyVet[i] = labelsArray.get(i).getProperty();
         }
-        Tile t = new Tile(new ImageIcon(tileImage), 32, 32, propertyVet);
+        Tile t = new Tile(new ImageIcon(tileImage), viewLabel.getTileWidth(), viewLabel.getTileHeight(), propertyVet);
         
         JFileChooser JFC = new JFileChooser();
             JFC.setFileFilter(new FileNameExtensionFilter("Tile archives (*.tile)", "tile"));
@@ -534,6 +565,64 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
     }//GEN-LAST:event_commonsTreeMouseClicked
 
     private void useSelectedTileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useSelectedTileButtonActionPerformed
+        labelsArray = new ArrayList<>();
+        labelsPanel.removeAll();                
+        
+        int hLblCnt = (viewLabel.getTileWidth()/32);
+        int vLblCnt = (viewLabel.getTileHeight()/32);
+        
+        labelsPanel.setLayout(new java.awt.GridLayout((vLblCnt*8), (hLblCnt*8), 3, 3));
+        
+        for(int i = 0; i < (hLblCnt*8)*(vLblCnt*8) ; i++) {
+            labelsArray.add(new Label(Property.WALKABLE_TILE));
+            labelsArray.get(i).setBorder(BorderFactory.createSoftBevelBorder(0));
+            labelsArray.get(i).setSize(32/hLblCnt, 32/vLblCnt);
+            labelIndex = i;
+            labelsArray.get(i).addMouseListener(new MouseListener() {
+                private final int thisIndex = labelIndex;
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try{
+                        labelsArray.get(selectedLabelIndex).setBorder(BorderFactory.createSoftBevelBorder(0));
+                    } catch(ArrayIndexOutOfBoundsException ex) {}
+                    
+                    if(normalRadioButton.isSelected()) {
+                        labelsArray.get(thisIndex).setProperty(Property.WALKABLE_TILE);
+                    } else if(wallRadioButton.isSelected()) {
+                        labelsArray.get(thisIndex).setProperty(Property.WALLED_TILE);
+                    } else if(uppergroundRadioButton.isSelected()) {
+                        labelsArray.get(thisIndex).setProperty(Property.UPPER_TILE);
+                    }
+                    
+                    selectedLabelIndex = thisIndex;
+                    labelsArray.get(thisIndex).setBorder(BorderFactory.createSoftBevelBorder(1));                    
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    
+                }
+            });
+            labelsPanel.add(labelsArray.get(i));
+        }
+        
+        labelsPanel.repaint();
+        
         if(commonsTree.getSelectionPath().getPathComponent(commonsTree.getSelectionPath().getPathCount()-2).toString().equals("Tiles")) {            
             if(tilesFolder.concat(commonsTree.getSelectionPath().getLastPathComponent().toString()).contains(".tile")) {
                 Tile t = readObject(new File(tilesFolder.concat(commonsTree.getSelectionPath().getLastPathComponent().toString())));
@@ -606,6 +695,14 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_changePngsDirMenuItemActionPerformed
 
+    private void tileWidthTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tileWidthTextFieldActionPerformed
+        viewLabel.setTileWidth(Integer.parseInt(tileWidthTextField.getText()));        
+    }//GEN-LAST:event_tileWidthTextFieldActionPerformed
+
+    private void tileHeightTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tileHeightTextFieldActionPerformed
+        viewLabel.setTileHeight(Integer.parseInt(tileHeightTextField.getText()));
+    }//GEN-LAST:event_tileHeightTextFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -659,10 +756,14 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
         }       
         
         int x = 0, y = 0;
-        for(int i = 0; i < 64; i++) {
-            labelsArray.get(i).setIcon(resizeImage(new ImageIcon((buffImage.getSubimage(x, y, 4, 4))), 32, 32));
+        
+        int hLblCnt = (viewLabel.getTileWidth()/32);
+        int vLblCnt = (viewLabel.getTileHeight()/32);
+        
+        for(int i = 0; i < (hLblCnt*8)*(vLblCnt*8); i++) {
+            labelsArray.get(i).setIcon(resizeImage(new ImageIcon((buffImage.getSubimage(x, y, 4, 4))), labelsArray.get(0).getWidth(), labelsArray.get(0).getHeight()));
             x += 4;
-            if(x >= 32) {
+            if(x >= (hLblCnt*32)) {
                 x = 0; 
                 y += 4;
             }
@@ -745,9 +846,12 @@ public class InterfaceGraficaPeixoto extends javax.swing.JFrame {
     private javax.swing.JMenu optionsMenu;
     private javax.swing.JMenuItem redoMenuItem;
     private javax.swing.JMenuItem saveTileMenuItem;
+    private javax.swing.JTextField tileHeightTextField;
+    private javax.swing.JTextField tileWidthTextField;
     private javax.swing.JMenuItem undoMenuItem;
     private javax.swing.JRadioButton uppergroundRadioButton;
     private javax.swing.JButton useSelectedTileButton;
     private javax.swing.JRadioButton wallRadioButton;
+    private javax.swing.JLabel xLabel;
     // End of variables declaration//GEN-END:variables
 }

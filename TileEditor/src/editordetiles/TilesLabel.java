@@ -16,8 +16,8 @@ import javax.swing.JLabel;
 public class TilesLabel extends JLabel{
     private boolean Grid;
     
-    private final int width,
-                      height;
+    private int width,
+                height;
 
     private int x = 0, y = 0;
     public TilesLabel(int width, int height) {
@@ -87,7 +87,23 @@ public class TilesLabel extends JLabel{
             return new ImageIcon(buffImage.getSubimage(x, y, width, height));        
     }
     
-     void setGrid(boolean selected) {
+    public void setGrid(boolean selected) {
         Grid = selected;
     }    
+     
+    public int getTileWidth() {
+        return width;
+    }
+    
+    public int getTileHeight() {
+        return height;
+    }
+    
+    public void setTileWidth(int width) {
+        this.width = width;
+    }
+    
+    public void setTileHeight(int height) {
+        this.height = height;
+    }
 }
